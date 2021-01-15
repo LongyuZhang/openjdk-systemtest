@@ -15,9 +15,9 @@ limitations under the License.
 
 package net.adoptopenjdk.test.hcrAgent.agent;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import jdk.internal.org.objectweb.asm.ClassVisitor;
+import jdk.internal.org.objectweb.asm.MethodVisitor;
+import jdk.internal.org.objectweb.asm.Opcodes;
 import java.util.Random;
 
 /*
@@ -34,7 +34,15 @@ public class MyClassVisitor extends ClassVisitor {
 	int percentage;
 	int threadNumber;
 	// Number generator to decide if we want to visit a specific method.
-	Random randomNumberGenerator;	
+	Random randomNumberGenerator;
+	
+	
+	
+	// static int OpcodesASMVersion = (Integer.parseInt(System.getProperty("java.version.number")) < 11) ? Opcodes.ASM4 : Opcodes.GETFIELD("ASM7");
+	// static int OpcodesASMVersion = Opcodes.ASM4;
+	// if ()
+	OpcodesASMVersion OpcodesASM= new OpcodesASMVersion();
+	static int finalOpcodesASMVersion = OpcodesASM.setOpcodesASMVersion();
 
 	/**
 	 * Constructor.
@@ -42,7 +50,7 @@ public class MyClassVisitor extends ClassVisitor {
 	 * @param  percentage The average percentage of public methods we want to transform.
 	 */
 	public MyClassVisitor(ClassVisitor cv, int percentage, long seed, int threadNumber) {
-		super(Opcodes.ASM7, cv);
+		super(finalOpcodesASMVersion, cv);
 		this.percentage = percentage;
 		randomNumberGenerator = new Random(seed);
 		this.threadNumber = threadNumber;

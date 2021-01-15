@@ -15,8 +15,8 @@ limitations under the License.
 
 package net.adoptopenjdk.test.hcrAgent.agent;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import jdk.internal.org.objectweb.asm.MethodVisitor;
+import jdk.internal.org.objectweb.asm.Opcodes;
 
 /*
  * This class inserts new byte codes into an existing Java class.
@@ -28,6 +28,13 @@ public class MyMethodVisitor extends MethodVisitor {
 	private String methodNameLocal;
 	private int randomNumber;
 	private int threadNumber;
+	
+	//static int OpcodesASMVersion = (Integer.parseInt(System.getProperty("java.version.number")) < 11) ? Opcodes.ASM4 : Opcodes.GETFIELD("ASM7");
+	
+	OpcodesASMVersion OpcodesASM= new OpcodesASMVersion();
+	static int finalOpcodesASMVersion = OpcodesASM.setOpcodesASMVersion();
+	
+	
 	/**
 	 * The constructor for this class.
 	 * @param mv           The MethodVisitor representing the method we're modifying. Receives all method calls we don't override. 
@@ -36,7 +43,7 @@ public class MyMethodVisitor extends MethodVisitor {
 	 * @param threadNumber Used to generate thread-specific log messages, as many of these may be running at once.
 	 */
 	public MyMethodVisitor(MethodVisitor mv, String methodName, int randomNumber, int threadNumber) {
-		super(Opcodes.ASM7, mv);
+		super(finalOpcodesASMVersion, mv);
 		methodNameLocal = methodName;
 		this.randomNumber = randomNumber;
 		this.threadNumber = threadNumber;

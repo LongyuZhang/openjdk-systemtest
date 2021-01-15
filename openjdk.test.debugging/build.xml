@@ -120,6 +120,7 @@ limitations under the License.
 			   includeantruntime="false"
 			   failonerror="true">
 			<include name="**/*.java"/>
+			<exclude name="**/src_11/**"/>
 		</javac>
 	</target>
 	
@@ -136,6 +137,7 @@ limitations under the License.
 			<include name="**/*.java"/>
 		</depend>
 		-->
+		<property name="addExports" value="--add-exports java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED" />
 		<javac srcdir="${openjdk_test_debugging_src_dir}"
 			   destdir="${openjdk_test_debugging_bin_dir}"
 			   fork="true"
@@ -148,7 +150,9 @@ limitations under the License.
 			<compilerarg value="-source"/>
 			<compilerarg value="${java.specification.version}"/>
 			<compilerarg value="--enable-preview"/>
+			<compilerarg line='${addExports}' />
 			<include name="**/*.java"/>
+			<exclude name="**/src_8/**"/>
 		</javac>
 	</target>
 	
